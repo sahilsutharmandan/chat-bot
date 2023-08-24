@@ -1,37 +1,3 @@
-<script setup>
-import Checkbox from "@/Components/Checkbox.vue";
-import GuestLayout from "@/Layouts/GuestLayout.vue";
-import InputError from "@/Components/InputError.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import TextInput from "@/Components/TextInput.vue";
-import { Head, Link, useForm } from "@inertiajs/vue3";
-
-defineProps({
-    canResetPassword: {
-        type: Boolean,
-    },
-    status: {
-        type: String,
-    },
-    canRegister: {
-        type: Boolean,
-    },
-});
-
-const form = useForm({
-    email: "",
-    password: "",
-    remember: false,
-});
-
-const submit = () => {
-    form.post(route("login"), {
-        onFinish: () => form.reset("password"),
-    });
-};
-</script>
-
 <template>
     <GuestLayout>
         <Head title="Log in" />
@@ -40,37 +6,24 @@ const submit = () => {
             {{ status }}
         </div>
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="email" value="Email" />
+        <form @submit.prevent="submit" class="space-y-5">
+            <TextInput
+                label="Email"
+                type="email"
+                v-model="form.email"
+                required
+                autofocus
+                autocomplete="username"
+                :errors="form.errors.email"
+            />
 
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="block w-full mt-1"
-                    v-model="form.email"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
-
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="block w-full mt-1"
-                    v-model="form.password"
-                    required
-                    autocomplete="current-password"
-                />
-
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
+            <TextInput
+                label="Password"
+                type="password"
+                v-model="form.password"
+                autocomplete="current-password"
+                :errors="form.errors.password"
+            />
 
             <div class="flex justify-between mt-4">
                 <label class="flex items-center">
@@ -108,3 +61,36 @@ const submit = () => {
         </form>
     </GuestLayout>
 </template>
+<script setup>
+import Checkbox from "@/Components/Checkbox.vue";
+import GuestLayout from "@/Layouts/GuestLayout.vue";
+
+import InputLabel from "@/Components/InputLabel.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import TextInput from "@/Components/TextInput.vue";
+import { Head, Link, useForm } from "@inertiajs/vue3";
+
+defineProps({
+    canResetPassword: {
+        type: Boolean,
+    },
+    status: {
+        type: String,
+    },
+    canRegister: {
+        type: Boolean,
+    },
+});
+
+const form = useForm({
+    email: "",
+    password: "",
+    remember: false,
+});
+
+const submit = () => {
+    form.post(route("login"), {
+        onFinish: () => form.reset("password"),
+    });
+};
+</script>

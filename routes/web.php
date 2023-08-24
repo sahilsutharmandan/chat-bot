@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\chatController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,12 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('chat', [chatController::class,'index'])->name('chat.index');
+Route::get('chat/create', [chatController::class,'create'])->name('chat.create');
+Route::post('chat/store', [chatController::class,'store'])->name('chat.store');
+Route::get('chat/{id}/edit', [chatController::class,'edit'])->name('chat.edit');
+Route::put('chat/{id}/update', [chatController::class,'update'])->name('chat.update');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
